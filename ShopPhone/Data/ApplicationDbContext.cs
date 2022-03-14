@@ -3,9 +3,6 @@
     using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore;
     using ShopPhone.Data.Models;
-    using System;
-    using System.Collections.Generic;
-    using System.Text;
 
     public class ApplicationDbContext : IdentityDbContext
     {
@@ -19,5 +16,16 @@
         public DbSet<Category> Categories { get; set; }
 
         public DbSet<Owner> Owners { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            builder.Entity<Phone>()
+                .HasOne(p => p.Category)
+                .WithMany(p => p.Phones)
+                .HasForeignKey(p => p.CategotyId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            base.OnModelCreating(builder);
+        }
     }
 }

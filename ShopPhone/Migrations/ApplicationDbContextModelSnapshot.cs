@@ -263,9 +263,6 @@ namespace ShopPhone.Migrations
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
 
-                    b.Property<int?>("CategoryId")
-                        .HasColumnType("int");
-
                     b.Property<int>("CategotyId")
                         .HasColumnType("int");
 
@@ -289,7 +286,7 @@ namespace ShopPhone.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CategoryId");
+                    b.HasIndex("CategotyId");
 
                     b.ToTable("Phones");
                 });
@@ -349,7 +346,9 @@ namespace ShopPhone.Migrations
                 {
                     b.HasOne("ShopPhone.Data.Models.Category", "Category")
                         .WithMany("Phones")
-                        .HasForeignKey("CategoryId");
+                        .HasForeignKey("CategotyId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.Navigation("Category");
                 });

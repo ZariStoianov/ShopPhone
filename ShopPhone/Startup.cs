@@ -8,6 +8,7 @@ namespace ShopPhone
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
     using ShopPhone.Data;
+    using ShopPhone.Infrastructure;
 
     public class Startup
     {
@@ -38,6 +39,8 @@ namespace ShopPhone
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.PrepareDatabase();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
