@@ -4,6 +4,7 @@
     using ShopPhone.Data;
     using ShopPhone.Data.Models;
     using ShopPhone.Models;
+    using ShopPhone.Models.Phones;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -22,6 +23,26 @@
             {
                 Categories = this.GetCategory()
             });
+        }
+
+        public IActionResult All()
+        {
+            var phones = this.data
+                .Phones
+                .OrderByDescending(p => p.Id)
+                .Select(p => new PhoneListingViewModel
+                {
+                   Id = p.Id,
+                   Brand = p.Brand,
+                   Model = p.Model,
+                   Year = p.Year,
+                   ImageUrl = p.ImageUrl,
+                   Description = p.Description,
+                   Category = p.Category.Name
+                })
+                .ToList();
+
+            return View(phones);
         }
 
         [HttpPost]
@@ -51,7 +72,7 @@
             this.data.Add(phones);
             this.data.SaveChanges();
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction(nameof(All));
         }
 
         private IEnumerable<PhoneCategoryFormModel> GetCategory()

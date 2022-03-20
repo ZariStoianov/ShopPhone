@@ -1,31 +1,44 @@
 ﻿namespace ShopPhone.Controllers
 {
     using Microsoft.AspNetCore.Mvc;
-    using Microsoft.Extensions.Logging;
+    using ShopPhone.Data;
     using ShopPhone.Models;
-    using System;
-    using System.Collections.Generic;
+    using ShopPhone.Models.Home;
     using System.Diagnostics;
     using System.Linq;
-    using System.Threading.Tasks;
 
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly ApplicationDbContext data;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ApplicationDbContext data)
         {
-            _logger = logger;
+            this.data = data;
         }
 
         public IActionResult Index()
         {
-            return View();
-        }
+            var totalPhones = this.data.Phones.Count();
 
-        public IActionResult Privacy()
-        {
-            return View();
+            var phones = this.data
+                .Phones
+                .OrderByDescending(p => p.Id)
+                .Select(p => new PhoneIndexViewModel
+                {
+                    Id = p.Id,
+                    Brand = p.Brand,
+                    Model = p.Model,
+                    Year = p.Year,
+                    ImageUrl = p.ImageUrl
+                })
+                .Take(3)
+                .ToList();
+
+            return View(new IndexViewModel
+            {
+                TotalPhones = totalPhones,
+                Phones = phones
+            });
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
