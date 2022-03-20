@@ -15,6 +15,7 @@
 
             var data = scopeService.ServiceProvider.GetService<ApplicationDbContext>();
 
+            SeedCategories(data);
             data.Database.Migrate();
 
             return app;
