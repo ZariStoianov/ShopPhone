@@ -42,7 +42,10 @@
                 })
                 .ToList();
 
-            return View(phones);
+            return View(new AllPhonesQueryModel 
+            {
+                Phones = phones
+            });
         }
 
         [HttpPost]
