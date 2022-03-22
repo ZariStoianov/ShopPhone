@@ -25,27 +25,59 @@
             });
         }
 
-        public IActionResult All()
+        public IActionResult All([FromQuery]AllPhonesQueryModel query)
         {
-            var phones = this.data
-                .Phones
-                .OrderByDescending(p => p.Id)
+            var phoneQuery = this.data.Phones.AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(query.Brand))
+            {
+                phoneQuery = phoneQuery
+                    .Where(b => b.Brand == query.Brand);
+            }
+
+            if (!string.IsNullOrWhiteSpace(query.SearchTerm))
+            {
+                phoneQuery = phoneQuery.Where(p =>
+                (p.Brand + " " + p.Model.ToLower()).Contains(query.SearchTerm.ToLower()) ||
+                p.Description.ToLower().Contains(query.SearchTerm.ToLower()));
+            }
+
+            phoneQuery = query.Sorting switch
+            {
+                AllPhonesSorting.Year => phoneQuery.OrderByDescending(p => p.Year),
+                AllPhonesSorting.BrandAndModel => phoneQuery.OrderBy(p => p.Model),
+                AllPhonesSorting.DateCreated or _ => phoneQuery.OrderByDescending(p => p.Id),
+            };
+
+            var totalPhones = this.data.Phones.Count();
+
+            var phones = phoneQuery
+                .Skip((query.CurrentPage - 1) * AllPhonesQueryModel.PhonePerPage)
+                .Take(AllPhonesQueryModel.PhonePerPage)
                 .Select(p => new PhoneListingViewModel
                 {
-                   Id = p.Id,
-                   Brand = p.Brand,
-                   Model = p.Model,
-                   Year = p.Year,
-                   ImageUrl = p.ImageUrl,
-                   Description = p.Description,
-                   Category = p.Category.Name
+                    Id = p.Id,
+                    Brand = p.Brand,
+                    Model = p.Model,
+                    Year = p.Year,
+                    ImageUrl = p.ImageUrl,
+                    Description = p.Description,
+                    Category = p.Category.Name
                 })
                 .ToList();
 
-            return View(new AllPhonesQueryModel 
-            {
-                Phones = phones
-            });
+            var phoneBrand = this.data
+                .Phones
+                .Select(b => b.Brand)
+                .Distinct()
+                .OrderByDescending(b => b)
+                .ToList();
+
+            query.TotalPhones = totalPhones;
+            query.Brands = phoneBrand;
+            query.Phones = phones;
+
+            return View(query);
         }
 
         [HttpPost]
