@@ -1,6 +1,7 @@
 ﻿namespace ShopPhone.Data.Models
 {
     using System.ComponentModel.DataAnnotations;
+
     using static DataConstants.Phone;
     public class Phone
     {
@@ -28,5 +29,9 @@
         public int CategotyId { get; set; }
 
         public Category Category { get; set; }
+
+        public int OwnerId { get; set; }
+
+        public Owner Owner { get; set; }
     }
 }

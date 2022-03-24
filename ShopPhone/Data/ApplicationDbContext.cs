@@ -1,5 +1,6 @@
 ﻿namespace ShopPhone.Data
 {
+    using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore;
     using ShopPhone.Data.Models;
@@ -20,9 +21,21 @@
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.Entity<Phone>()
+                .HasOne(o => o.Owner)
+                .WithMany(p => p.Phones)
+                .HasForeignKey(o => o.OwnerId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<Phone>()
                 .HasOne(p => p.Category)
                 .WithMany(p => p.Phones)
                 .HasForeignKey(p => p.CategotyId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<Owner>()
+                .HasOne<IdentityUser>()
+                .WithOne()
+                .HasForeignKey<Owner>(o => o.UserId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             base.OnModelCreating(builder);

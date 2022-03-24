@@ -49,7 +49,7 @@
                 AllPhonesSorting.DateCreated or _ => phoneQuery.OrderByDescending(p => p.Id),
             };
 
-            var totalPhones = this.data.Phones.Count();
+            var totalPhones = phoneQuery.Count();
 
             var phones = phoneQuery
                 .Skip((query.CurrentPage - 1) * AllPhonesQueryModel.PhonePerPage)
