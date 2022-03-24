@@ -1,8 +1,10 @@
 ﻿namespace ShopPhone.Controllers
 {
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using ShopPhone.Data;
     using ShopPhone.Data.Models;
+    using ShopPhone.Infrastructure;
     using ShopPhone.Models;
     using ShopPhone.Models.Phones;
     using System.Collections.Generic;
@@ -15,14 +17,6 @@
         public PhonesController(ApplicationDbContext data)
         {
             this.data = data;
-        }
-
-        public IActionResult Add()
-        {
-            return View(new AddPhoneFormModel
-            {
-                Categories = this.GetCategory()
-            });
         }
 
         public IActionResult All([FromQuery]AllPhonesQueryModel query)
@@ -80,9 +74,36 @@
             return View(query);
         }
 
+
+        [Authorize]
+        public IActionResult Add()
+        {
+            if (!UserIsOwner())
+            {
+                return RedirectToAction("Create", "Owners");
+            } 
+
+            return View(new AddPhoneFormModel
+            {
+                Categories = this.GetCategory()
+            });
+        }
+
         [HttpPost]
+        [Authorize]
         public IActionResult Add(AddPhoneFormModel phone)
         {
+            var ownerId = this.data
+                .Owners
+                .Where(o => o.UserId == this.User.GetId())
+                .Select(o => o.Id)
+                .FirstOrDefault();
+
+            if (ownerId == 0)
+            {
+                return RedirectToAction("Create", "Owners");
+            }
+
             if (!this.data.Categories.Any(c => c.Id == phone.CategoryId))
             {
                 this.ModelState.AddModelError(nameof(phone.CategoryId), "Category does not exist.");
@@ -101,13 +122,21 @@
                 ImageUrl = phone.ImageUrl,
                 Year = phone.Year,
                 Description = phone.Description,
-                CategotyId = phone.CategoryId
+                CategotyId = phone.CategoryId,
+                OwnerId = ownerId
             };
 
             this.data.Add(phones);
             this.data.SaveChanges();
 
-            return RedirectToAction(nameof(All));
+            return RedirectToAction("All");
+        }
+
+        public bool UserIsOwner()
+        {
+            return data
+                .Owners
+                .Any(o => o.UserId == this.User.GetId());
         }
 
         private IEnumerable<PhoneCategoryFormModel> GetCategory()
