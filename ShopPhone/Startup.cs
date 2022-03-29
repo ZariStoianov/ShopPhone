@@ -9,6 +9,8 @@ namespace ShopPhone
     using Microsoft.Extensions.Hosting;
     using ShopPhone.Data;
     using ShopPhone.Infrastructure;
+    using ShopPhone.Services.Phones;
+    using ShopPhone.Services.Statistics;
 
     public class Startup
     {
@@ -35,6 +37,9 @@ namespace ShopPhone
             })
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddControllersWithViews();
+
+            services.AddTransient<IStatisticsService, StatisticsService>();
+            services.AddTransient<IPhoneService, PhoneService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

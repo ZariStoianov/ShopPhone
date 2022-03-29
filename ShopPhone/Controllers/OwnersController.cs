@@ -6,10 +6,7 @@
     using ShopPhone.Data.Models;
     using ShopPhone.Infrastructure;
     using ShopPhone.Models.Owners;
-    using System;
-    using System.Collections.Generic;
     using System.Linq;
-    using System.Threading.Tasks;
 
     public class OwnersController : Controller
     {

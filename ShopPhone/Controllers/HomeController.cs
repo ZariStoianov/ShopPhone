@@ -4,21 +4,23 @@
     using ShopPhone.Data;
     using ShopPhone.Models;
     using ShopPhone.Models.Home;
+    using ShopPhone.Services.Statistics;
     using System.Diagnostics;
     using System.Linq;
 
     public class HomeController : Controller
     {
         private readonly ApplicationDbContext data;
+        private readonly IStatisticsService statistics;
 
-        public HomeController(ApplicationDbContext data)
+        public HomeController(ApplicationDbContext data, IStatisticsService statistics)
         {
             this.data = data;
+            this.statistics = statistics;
         }
 
         public IActionResult Index()
         {
-            var totalPhones = this.data.Phones.Count();
 
             var phones = this.data
                 .Phones
@@ -34,9 +36,12 @@
                 .Take(3)
                 .ToList();
 
+            var totalStatistics = this.statistics.Total();
+
             return View(new IndexViewModel
             {
-                TotalPhones = totalPhones,
+                TotalPhones = totalStatistics.TotalPhones,
+                TotalUsers = totalStatistics.TotalUsers,
                 Phones = phones
             });
         }

@@ -1,5 +1,6 @@
 ﻿namespace ShopPhone.Models.Phones
 {
+    using ShopPhone.Services.Phones;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
@@ -21,6 +22,6 @@
 
         public AllPhonesSorting Sorting { get; set; }
 
-        public IEnumerable<PhoneListingViewModel> Phones { get; set; }
+        public IEnumerable<PhoneServiceModel> Phones { get; set; }
     }
 }
