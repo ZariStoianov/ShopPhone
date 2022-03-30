@@ -1,10 +1,7 @@
 ﻿namespace ShopPhone.Services.Phones
 {
     using ShopPhone.Models.Phones;
-    using System;
     using System.Collections.Generic;
-    using System.Linq;
-    using System.Threading.Tasks;
 
     public interface IPhoneService
     {
@@ -13,5 +10,32 @@
             AllPhonesSorting sorting,
             int currentPage,
             int phonePerPage);
+
+        IEnumerable<string> AllPhoneBrands();
+
+        IEnumerable<PhoneServiceModel> ByUser(string userId);
+
+        IEnumerable<PhoneCategoryServiceModel> AllCategories();
+
+        bool CategoryExists(int categoryId);
+
+        int Create(string brand,
+                string model,
+                string imageUrl,
+                int year,
+                string description,
+                int categoryId,
+                int ownerId);
+
+        bool Edit(int id,
+                string brand,
+                string model,
+                string imageUrl,
+                int year,
+                string description,
+                int categoryId,
+                int ownerId);
+
+        PhoneDetailsServiceModel Details(int id);
     }
 }

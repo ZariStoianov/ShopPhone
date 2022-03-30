@@ -1,11 +1,10 @@
 ﻿namespace ShopPhone.Services.Phones
 {
     using ShopPhone.Data;
+    using ShopPhone.Data.Models;
     using ShopPhone.Models.Phones;
-    using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Threading.Tasks;
 
     public class PhoneService : IPhoneService
     {
@@ -47,20 +46,9 @@
 
             var totalPhones = phoneQuery.Count();
 
-            var phones = phoneQuery
+            var phones = GetPhones(phoneQuery
                 .Skip((currentPage - 1) * phonePerPage)
-                .Take(phonePerPage)
-                .Select(p => new PhoneServiceModel
-                {
-                    Id = p.Id,
-                    Brand = p.Brand,
-                    Model = p.Model,
-                    Year = p.Year,
-                    ImageUrl = p.ImageUrl,
-                    Description = p.Description,
-                    Category = p.Category.Name
-                })
-                .ToList();
+                .Take(phonePerPage));
 
             return new PhoneQueryServiceModel
             {
@@ -79,6 +67,123 @@
                 .Distinct()
                 .OrderByDescending(b => b)
                 .ToList();
+        }
+
+        public IEnumerable<PhoneServiceModel> ByUser(string userId)
+        {
+            return GetPhones(this.data
+                .Phones
+                .Where(p => p.Owner.UserId == userId));
+        }
+
+        private static IEnumerable<PhoneServiceModel> GetPhones(IQueryable<Phone> phoneQuery)
+        {
+            return phoneQuery.Select(p => new PhoneServiceModel
+            {
+                Id = p.Id,
+                Brand = p.Brand,
+                Model = p.Model,
+                Year = p.Year,
+                ImageUrl = p.ImageUrl,
+                CategoryName = p.Category.Name
+            })
+            .ToList();
+        }
+
+        public IEnumerable<PhoneCategoryServiceModel> AllCategories()
+        {
+            return this.data
+                .Categories
+                .Select(c => new PhoneCategoryServiceModel
+                {
+                    Id = c.Id,
+                    Name = c.Name
+                })
+                .ToList();
+        }
+
+        public PhoneDetailsServiceModel Details(int id)
+        {
+            return this.data
+                .Phones
+                .Where(p => p.Id == id)
+                .Select(p => new PhoneDetailsServiceModel
+                {
+                    Id = p.Id,
+                    Brand = p.Brand,
+                    Model = p.Model,
+                    Year = p.Year,
+                    ImageUrl = p.ImageUrl,
+                    Description = p.Description,
+                    CategoryName = p.Category.Name,
+                    OwnerId = p.OwnerId,
+                    OwnerName = p.Owner.FullName,
+                    UserId = p.Owner.UserId
+                })
+                .FirstOrDefault();
+        }
+
+        public bool CategoryExists(int categoryId)
+        {
+            return this.data
+                .Categories
+                .Any(c => c.Id == categoryId);
+        }
+
+        public int Create(string brand,
+            string model,
+            string imageUrl,
+            int year,
+            string description,
+            int categoryId,
+            int ownerId)
+        {
+            var phones = new Phone
+            {
+                Brand = brand,
+                Model = model,
+                ImageUrl = imageUrl,
+                Year = year,
+                Description = description,
+                CategotyId = categoryId,
+                OwnerId = ownerId
+            };
+
+            this.data.Add(phones);
+            this.data.SaveChanges();
+
+            return phones.Id;
+        }
+
+        public bool Edit(int id,
+            string brand,
+            string model,
+            string imageUrl,
+            int year,
+            string description,
+            int categoryId,
+            int ownerId)
+        {
+            var phone = this.data
+                .Phones
+                .Find(id);
+
+            if (phone.OwnerId != ownerId)
+            {
+                return false;
+            }
+
+            phone.Brand = brand;
+            phone.Model = model;
+            phone.ImageUrl = imageUrl;
+            phone.Year = year;
+            phone.Description = description;
+            phone.CategotyId = categoryId;
+            phone.OwnerId = ownerId;
+
+            this.data.SaveChanges();
+
+            return true;
         }
     }
 }

@@ -44,20 +44,7 @@
     <h2 class="text-center">No phones added yet.</h2>
 }
 
-<div class="row">
-    @foreach (var phone in Model.Phones)
-    {
-        <div class="col-md-4">
-            <div class="card mb-4">
-                <img class="card-img-top" src="@phone.ImageUrl" alt="@phone.Brand @phone.Model @phone.Year (@phone.Category)">
-                <div class="card-body text-center">
-                    <h5 class="card-title text-center">@phone.Brand @phone.Model (@phone.Year)</h5>
-                    <a asp-controller="Phones" asp-action="Details" asp-route-id="@phone.Id" class="btn btn-primary">View More</a>
-                </div>
-            </div>
-        </div>
-    }
-</div>
+<partial name="_PhonesPartial" model="@Model.Phones" />
 
 @{ 
     var previosPage = Model.CurrentPage - 1;

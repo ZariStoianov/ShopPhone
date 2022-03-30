@@ -9,6 +9,7 @@ namespace ShopPhone
     using Microsoft.Extensions.Hosting;
     using ShopPhone.Data;
     using ShopPhone.Infrastructure;
+    using ShopPhone.Services.Owners;
     using ShopPhone.Services.Phones;
     using ShopPhone.Services.Statistics;
 
@@ -40,6 +41,7 @@ namespace ShopPhone
 
             services.AddTransient<IStatisticsService, StatisticsService>();
             services.AddTransient<IPhoneService, PhoneService>();
+            services.AddTransient<IOwnerService, OwnerService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

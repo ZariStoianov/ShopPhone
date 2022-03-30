@@ -1,10 +1,11 @@
 ﻿namespace ShopPhone.Models
 {
+    using ShopPhone.Services.Phones;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
     using static Data.DataConstants.Phone;
-    public class AddPhoneFormModel
+    public class PhoneFormModel
     { 
         [Required]
         [StringLength(PhoneBrandMaxLength, MinimumLength = PhoneBrandMinLength)]
@@ -29,6 +30,6 @@
         [Required]
         [Display(Name = "Category")]
         public int CategoryId { get; set; }
-        public IEnumerable<PhoneCategoryFormModel> Categories { get; set; }
+        public IEnumerable<PhoneCategoryServiceModel> Categories { get; set; }
     }
 }

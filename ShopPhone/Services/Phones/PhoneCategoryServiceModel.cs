@@ -1,6 +1,6 @@
-﻿namespace ShopPhone.Models
+﻿namespace ShopPhone.Services.Phones
 {
-    public class PhoneCategoryFormModel
+    public class PhoneCategoryServiceModel
     {
         public int Id { get; set; }
 

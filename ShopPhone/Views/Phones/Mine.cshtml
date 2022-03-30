@@ -1,0 +1,13 @@
+﻿@model IEnumerable<PhoneServiceModel>
+
+@{
+    ViewBag.Title = "Mine";
+    ViewBag.AllowPhoneEdit = true;
+}
+
+@if (!Model.Any())
+{
+    <h2 class="text-center">No phones added yet.</h2>
+}
+
+<partial name="_PhonesPartial" model="@Model" />
