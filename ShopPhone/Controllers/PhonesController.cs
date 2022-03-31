@@ -98,14 +98,14 @@
         {
             var userId = this.User.GetId();
 
-            if (!this.owners.IsOwner(userId))
+            if (!this.owners.IsOwner(userId) && !User.isAdmin())
             {
                 return RedirectToAction("Create", "Owners");
             }
 
             var phone = this.phones.Details(id);
 
-            if (phone.UserId != userId)
+            if (phone.UserId != userId && !User.isAdmin())
             {
                 return Unauthorized();
             }
@@ -128,7 +128,7 @@
         {
             var ownerId = this.owners.GetIdByUser(this.User.GetId());
 
-            if (ownerId == 0)
+            if (ownerId == 0 && !User.isAdmin())
             {
                 return RedirectToAction("Create", "Owners");
             }
@@ -144,7 +144,12 @@
                 return View(phone);
             }
 
-            var phoneEdit = this.phones.Edit(id,
+            if (!this.phones.IsByOwner(id, ownerId) && !User.isAdmin())
+            {
+                return BadRequest();
+            }
+
+             this.phones.Edit(id,
                 phone.Brand,
                 phone.Model,
                 phone.ImageUrl,
@@ -153,11 +158,7 @@
                 phone.CategoryId,
                 ownerId);
 
-            if (!phoneEdit)
-            {
-                return BadRequest();
-            }
-
+            
             return RedirectToAction("All");
         }
     }

@@ -1,22 +1,24 @@
 ﻿@using ShopPhone.Services.Owners
 @using Microsoft.AspNetCore.Identity
-@inject SignInManager<IdentityUser> SignInManager
-@inject UserManager<IdentityUser> UserManager
+
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
 @inject IOwnerService Owners
 
 <ul class="navbar-nav">
     @if (SignInManager.IsSignedIn(User))
     {
-            var userId = User.GetId();
-            var userIsOwner = Owners.IsOwner(userId);
+        var userId = User.GetId();
+        var userIsOwner = Owners.IsOwner(userId);
+        var userIsAdmin = User.isAdmin();
 
-        @if (userIsOwner)
+        @if (userIsOwner && !userIsAdmin)
         {
             <li class="nav-item">
                 <a class="nav-link text-dark" asp-area="" asp-controller="Phones" asp-action="Mine">My Phones</a>
             </li>
         }
-        else
+        else if (!userIsAdmin)
         {
             <li class="nav-item">
                 <a class="nav-link text-dark" asp-area="" asp-controller="Owners" asp-action="Create">Become Owner</a>

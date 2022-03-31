@@ -1,11 +1,10 @@
 ﻿namespace ShopPhone.Data
 {
-    using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore;
     using ShopPhone.Data.Models;
 
-    public class ApplicationDbContext : IdentityDbContext
+    public class ApplicationDbContext : IdentityDbContext<User>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
@@ -33,7 +32,7 @@
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder.Entity<Owner>()
-                .HasOne<IdentityUser>()
+                .HasOne<User>()
                 .WithOne()
                 .HasForeignKey<Owner>(o => o.UserId)
                 .OnDelete(DeleteBehavior.Restrict);

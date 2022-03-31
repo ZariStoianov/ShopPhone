@@ -1,28 +1,42 @@
 ﻿namespace ShopPhone.Infrastructure
 {
     using Microsoft.AspNetCore.Builder;
+    using Microsoft.AspNetCore.Identity;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.DependencyInjection;
     using ShopPhone.Data;
     using ShopPhone.Data.Models;
+    using System;
     using System.Linq;
+    using System.Threading.Tasks;
+
+    using static WebConstants;
 
     public static class AppBuilderExtension
     {
         public static IApplicationBuilder PrepareDatabase(this IApplicationBuilder app)
         {
-            using var scopeService = app.ApplicationServices.CreateScope();
+            using var scopedService = app.ApplicationServices.CreateScope();
+            var services = scopedService.ServiceProvider;
+            MigrateDatabase(services);
 
-            var data = scopeService.ServiceProvider.GetService<ApplicationDbContext>();
-
-            SeedCategories(data);
-            data.Database.Migrate();
-
+            SeedCategories(services);
+            SeedAdministrator(services);
             return app;
         }
 
-        private static void SeedCategories(ApplicationDbContext data)
+        private static void MigrateDatabase(IServiceProvider service)
         {
+            var data = service.GetRequiredService<ApplicationDbContext>();
+
+            data.Database.Migrate();
+        }
+
+        private static void SeedCategories(IServiceProvider service)
+        {
+
+            var data = service.GetRequiredService<ApplicationDbContext>();
+
             if (data.Categories.Any())
             {
                 return;
@@ -37,6 +51,39 @@
             });
 
             data.SaveChanges();
+        }
+
+        private static void SeedAdministrator(IServiceProvider service)
+        {
+            var userManager = service.GetRequiredService<UserManager<User>>();
+            var roleManager = service.GetRequiredService<RoleManager<IdentityRole>>();
+
+            Task.Run(async() =>
+            {
+                if (await roleManager.RoleExistsAsync(AdministratorRoleName))
+                {
+                    return;
+                }
+                var role = new IdentityRole { Name = AdministratorRoleName };
+
+                await roleManager.CreateAsync(role);
+
+                const string adminEmail = "babo4ko@gmail.com";
+                const string adminPass = "123456";
+
+                var user = new User
+                {
+                    Email = adminEmail,
+                    UserName = adminEmail,
+                    FullName = "Admin"
+                };
+
+                await userManager.CreateAsync(user, adminPass);
+
+                await userManager.AddToRoleAsync(user, role.Name);
+            })
+                 .GetAwaiter()
+                 .GetResult();
         }
     }
 }

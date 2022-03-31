@@ -36,20 +36,20 @@
             public const int CategoryNameMinLength = 2;
         }
 
-        //public class User
-        //{
-        //    public const int UserNameMaxLength = 30;
-        //    public const int UserNameMinLength = 2;
+        public class User
+        {
+            public const int UserNameMaxLength = 30;
+            public const int UserNameMinLength = 2;
 
-        //    public const int UserLastNameMaxLength = 30;
-        //    public const int UserLastNameMinLength = 2;
+            public const int UserLastNameMaxLength = 30;
+            public const int UserLastNameMinLength = 2;
 
-        //    public const int UserEmailMaxLength = 50;
-        //    public const int UserEmailMinLength = 2;
+            public const int UserEmailMaxLength = 50;
+            public const int UserEmailMinLength = 2;
 
-        //    public const int UserPhoneMaxValue = 20;
-        //    public const int UserPhoneMinValue = 10;
-        //}
+            public const int UserPhoneMaxValue = 20;
+            public const int UserPhoneMinValue = 10;
+        }
 
     }
 }

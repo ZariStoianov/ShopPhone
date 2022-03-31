@@ -8,6 +8,7 @@ namespace ShopPhone
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
     using ShopPhone.Data;
+    using ShopPhone.Data.Models;
     using ShopPhone.Infrastructure;
     using ShopPhone.Services.Owners;
     using ShopPhone.Services.Phones;
@@ -29,13 +30,14 @@ namespace ShopPhone
                     Configuration.GetConnectionString("DefaultConnection")));
             services.AddDatabaseDeveloperPageExceptionFilter();
 
-            services.AddDefaultIdentity<IdentityUser>(options => 
+            services.AddDefaultIdentity<User>(options =>
             {
                 options.Password.RequireDigit = false;
                 options.Password.RequireLowercase = false;
                 options.Password.RequireUppercase = false;
                 options.Password.RequireNonAlphanumeric = false;
             })
+                .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddControllersWithViews();
 

@@ -17,6 +17,8 @@
 
         IEnumerable<PhoneCategoryServiceModel> AllCategories();
 
+        bool IsByOwner(int phoneId, int ownerId);
+
         bool CategoryExists(int categoryId);
 
         int Create(string brand,

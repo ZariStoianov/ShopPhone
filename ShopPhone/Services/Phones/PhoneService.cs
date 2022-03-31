@@ -185,5 +185,12 @@
 
             return true;
         }
+
+        public bool IsByOwner(int phoneId, int ownerId)
+        {
+            return this.data
+                .Phones
+                .Any(p => p.Id == phoneId && p.OwnerId == ownerId);
+        }
     }
 }
