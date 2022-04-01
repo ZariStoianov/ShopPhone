@@ -10,7 +10,7 @@
     {
         var userId = User.GetId();
         var userIsOwner = Owners.IsOwner(userId);
-        var userIsAdmin = User.isAdmin();
+        var userIsAdmin = User.IsAdmin();
 
         @if (userIsOwner && !userIsAdmin)
         {

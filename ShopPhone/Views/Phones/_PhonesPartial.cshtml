@@ -9,7 +9,7 @@
                 <div class="card-body text-center">
                     <h5 class="card-title text-center">@phone.Brand @phone.Model (@phone.Year)</h5>
                     <a asp-controller="Phones" asp-action="Details" asp-route-id="@phone.Id" class="btn btn-primary">View More</a>
-                    @if (ViewBag.AllowPhoneEdit == true || User.isAdmin())
+                    @if (ViewBag.AllowPhoneEdit == true || User.IsAdmin())
                     {
                         <a asp-controller="Phones" asp-action="Edit" asp-route-id="@phone.Id" class="btn btn-warning">Edit</a>
                         <a asp-controller="Phones" asp-action="Delete" asp-route-id="@phone.Id" class="btn btn-danger">Delete</a>

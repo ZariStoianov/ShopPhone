@@ -1,7 +1,11 @@
 ﻿@model PhoneFormModel
 
-@{ 
+@{
     ViewData["Title"] = "Add Phone";
 }
 
 <partial name="_PhoneFormPartial" model="@Model" />
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

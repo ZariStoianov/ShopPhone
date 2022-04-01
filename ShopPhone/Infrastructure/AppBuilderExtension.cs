@@ -1,4 +1,6 @@
-﻿namespace ShopPhone.Infrastructure
+﻿using ShopPhone.Areas.Admin;
+
+namespace ShopPhone.Infrastructure
 {
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Identity;
@@ -10,7 +12,7 @@
     using System.Linq;
     using System.Threading.Tasks;
 
-    using static WebConstants;
+    using static AdminConstants;
 
     public static class AppBuilderExtension
     {

@@ -1,8 +1,10 @@
-﻿namespace ShopPhone.Infrastructure
+﻿using ShopPhone.Areas.Admin;
+
+namespace ShopPhone.Infrastructure
 {
     using System.Security.Claims;
 
-    using static WebConstants;
+    using static AdminConstants;
 
     public static class ClaimsPrincipalExtensions
     {
@@ -11,7 +13,7 @@
             return user.FindFirst(ClaimTypes.NameIdentifier).Value;
         }
 
-        public static bool isAdmin(this ClaimsPrincipal user)
+        public static bool IsAdmin(this ClaimsPrincipal user)
         {
             return user.IsInRole(AdministratorRoleName);
         }
