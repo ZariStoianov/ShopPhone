@@ -1,5 +1,7 @@
 ﻿namespace ShopPhone.Controllers
 {
+    using AutoMapper;
+    using AutoMapper.QueryableExtensions;
     using Microsoft.AspNetCore.Mvc;
     using ShopPhone.Data;
     using ShopPhone.Models;
@@ -12,11 +14,13 @@
     {
         private readonly ApplicationDbContext data;
         private readonly IStatisticsService statistics;
+        private readonly IMapper mapper;
 
-        public HomeController(ApplicationDbContext data, IStatisticsService statistics)
+        public HomeController(ApplicationDbContext data, IStatisticsService statistics, IMapper mapper)
         {
             this.data = data;
             this.statistics = statistics;
+            this.mapper = mapper;
         }
 
         public IActionResult Index()
@@ -25,14 +29,7 @@
             var phones = this.data
                 .Phones
                 .OrderByDescending(p => p.Id)
-                .Select(p => new PhoneIndexViewModel
-                {
-                    Id = p.Id,
-                    Brand = p.Brand,
-                    Model = p.Model,
-                    Year = p.Year,
-                    ImageUrl = p.ImageUrl
-                })
+                .ProjectTo<PhoneIndexViewModel>(this.mapper.ConfigurationProvider)
                 .Take(3)
                 .ToList();
 

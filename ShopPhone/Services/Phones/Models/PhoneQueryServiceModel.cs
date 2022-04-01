@@ -1,4 +1,4 @@
-﻿namespace ShopPhone.Services.Phones
+﻿namespace ShopPhone.Services.Phones.Models
 {
     using System;
     using System.Collections.Generic;

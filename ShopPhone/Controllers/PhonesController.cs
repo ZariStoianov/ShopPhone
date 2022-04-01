@@ -1,5 +1,6 @@
 ﻿namespace ShopPhone.Controllers
 {
+    using AutoMapper;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using ShopPhone.Infrastructure;
@@ -12,11 +13,13 @@
     {
         private readonly IPhoneService phones;
         private readonly IOwnerService owners;
+        private readonly IMapper mapper;
 
-        public PhonesController(IPhoneService phones, IOwnerService owners)
+        public PhonesController(IPhoneService phones, IOwnerService owners, IMapper mapper)
         {
             this.phones = phones;
             this.owners = owners;
+            this.mapper = mapper;
         }
 
         public IActionResult All([FromQuery] AllPhonesQueryModel query)
@@ -110,16 +113,11 @@
                 return Unauthorized();
             }
 
-            return View(new PhoneFormModel
-            {
-                Brand = phone.Brand,
-                Model = phone.Model,
-                ImageUrl = phone.ImageUrl,
-                Description = phone.Description,
-                CategoryId = phone.CategoryId,
+            var phoneForm = mapper.Map<PhoneFormModel>(phone);
 
-                Categories = this.phones.AllCategories()
-            });
+            phoneForm.Categories = this.phones.AllCategories();
+
+            return View(phoneForm);
         }
 
         [HttpPost]

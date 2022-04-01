@@ -1,6 +1,6 @@
 ﻿namespace ShopPhone.Models.Phones
 {
-    using ShopPhone.Services.Phones;
+    using ShopPhone.Services.Phones.Models;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 

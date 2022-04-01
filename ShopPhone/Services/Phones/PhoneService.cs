@@ -3,6 +3,7 @@
     using ShopPhone.Data;
     using ShopPhone.Data.Models;
     using ShopPhone.Models.Phones;
+    using ShopPhone.Services.Phones.Models;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -116,6 +117,7 @@
                     ImageUrl = p.ImageUrl,
                     Description = p.Description,
                     CategoryName = p.Category.Name,
+                    CategoryId = p.CategotyId,
                     OwnerId = p.OwnerId,
                     OwnerName = p.Owner.FullName,
                     UserId = p.Owner.UserId

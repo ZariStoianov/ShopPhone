@@ -41,6 +41,8 @@ namespace ShopPhone
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddControllersWithViews();
 
+            services.AddAutoMapper(typeof(Startup));
+
             services.AddTransient<IStatisticsService, StatisticsService>();
             services.AddTransient<IPhoneService, PhoneService>();
             services.AddTransient<IOwnerService, OwnerService>();

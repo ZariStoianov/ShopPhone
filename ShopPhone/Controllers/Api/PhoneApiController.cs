@@ -3,6 +3,7 @@
     using Microsoft.AspNetCore.Mvc;
     using ShopPhone.Models.Api.Phones;
     using ShopPhone.Services.Phones;
+    using ShopPhone.Services.Phones.Models;
 
     [ApiController]
     [Route("api/phones")]
