@@ -1,46 +1,43 @@
 ﻿namespace ShopPhone.Controllers
 {
-    using AutoMapper;
-    using AutoMapper.QueryableExtensions;
     using Microsoft.AspNetCore.Mvc;
-    using ShopPhone.Data;
-    using ShopPhone.Models;
-    using ShopPhone.Models.Home;
-    using ShopPhone.Services.Statistics;
-    using System.Diagnostics;
+    using Microsoft.Extensions.Caching.Memory;
+    using ShopPhone.Services.Phones;
+    using ShopPhone.Services.Phones.Models;
+    using System;
+    using System.Collections.Generic;
     using System.Linq;
 
     public class HomeController : Controller
     {
-        private readonly ApplicationDbContext data;
-        private readonly IStatisticsService statistics;
-        private readonly IMapper mapper;
+        private readonly IPhoneService phone;
+        private readonly IMemoryCache cache;
 
-        public HomeController(ApplicationDbContext data, IStatisticsService statistics, IMapper mapper)
+        public HomeController(IMemoryCache cache, IPhoneService phone)
         {
-            this.data = data;
-            this.statistics = statistics;
-            this.mapper = mapper;
+            this.cache = cache;
+            this.phone = phone;
         }
 
         public IActionResult Index()
         {
+            const string latestPhonesCacheKey = "LatestPhonesCacheKey";
 
-            var phones = this.data
-                .Phones
-                .OrderByDescending(p => p.Id)
-                .ProjectTo<PhoneIndexViewModel>(this.mapper.ConfigurationProvider)
-                .Take(3)
-                .ToList();
+            var phoneCache = this.cache.Get<List<LatestPhoneServiceModel>>(latestPhonesCacheKey);
 
-            var totalStatistics = this.statistics.Total();
-
-            return View(new IndexViewModel
+            if (phoneCache == null)
             {
-                TotalPhones = totalStatistics.TotalPhones,
-                TotalUsers = totalStatistics.TotalUsers,
-                Phones = phones
-            });
+                phoneCache = this.phone
+                    .Latest()
+                    .ToList();
+
+                var cacheOptions = new MemoryCacheEntryOptions()
+                    .SetAbsoluteExpiration(TimeSpan.FromMinutes(10));
+
+                this.cache.Set(latestPhonesCacheKey, phoneCache, cacheOptions);
+            }
+
+            return View(phoneCache);
         }
 
         public IActionResult Error()

@@ -15,7 +15,9 @@
         private readonly IOwnerService owners;
         private readonly IMapper mapper;
 
-        public PhonesController(IPhoneService phones, IOwnerService owners, IMapper mapper)
+        public PhonesController(IPhoneService phones,
+            IOwnerService owners,
+            IMapper mapper)
         {
             this.phones = phones;
             this.owners = owners;
@@ -46,6 +48,18 @@
             var myPhones = this.phones.ByUser(this.User.GetId());
 
             return View(myPhones);
+        }
+
+        public IActionResult Details(int id, string information)
+        {
+            var phone = this.phones.Details(id);
+
+            if (information != phone.ToFriendlyUrl())
+            {
+                return BadRequest();
+            }
+
+            return View(phone);
         }
 
 
@@ -85,7 +99,7 @@
                 return View(phone);
             }
 
-            this.phones.Create(phone.Brand,
+            var phoneId = this.phones.Create(phone.Brand,
                 phone.Model,
                 phone.ImageUrl,
                 phone.Year,
@@ -93,8 +107,11 @@
                 phone.CategoryId,
                 ownerId);
 
-            return RedirectToAction("All");
+            TempData[GlobalMessageKey] = "You phone was added and is awaiting for approval.";
+
+            return RedirectToAction(nameof(Details), new { id = phoneId, information = phone.ToFriendlyUrl()});
         }
+
 
         [Authorize]
         public IActionResult Edit(int id)
@@ -113,7 +130,7 @@
                 return Unauthorized();
             }
 
-            var phoneForm = mapper.Map<PhoneFormModel>(phone);
+            var phoneForm = this.mapper.Map<PhoneFormModel>(phone);
 
             phoneForm.Categories = this.phones.AllCategories();
 
@@ -147,7 +164,7 @@
                 return BadRequest();
             }
 
-             this.phones.Edit(id,
+             var edited = this.phones.Edit(id,
                 phone.Brand,
                 phone.Model,
                 phone.ImageUrl,
@@ -156,8 +173,10 @@
                 phone.CategoryId,
                 ownerId);
 
-            
-            return RedirectToAction("All");
+
+            TempData[GlobalMessageKey] = $"You phone was edited{(this.User.IsAdmin() ? string.Empty : " and is awaiting for approval")}!";
+
+            return RedirectToAction(nameof(Details), new { id, information = phone.ToFriendlyUrl() });
         }
     }
 }

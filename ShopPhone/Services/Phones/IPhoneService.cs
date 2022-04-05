@@ -6,17 +6,22 @@
 
     public interface IPhoneService
     {
-        PhoneQueryServiceModel All(string brand,
-            string searchTerm,
-            AllPhonesSorting sorting,
-            int currentPage,
-            int phonePerPage);
+        PhoneQueryServiceModel All(string brand = null,
+            string searchTerm = null,
+            AllPhonesSorting sorting = AllPhonesSorting.DateCreated,
+            int currentPage = 1,
+            int phonePerPage = int.MaxValue,
+            bool publicOnly = true);
 
         IEnumerable<string> AllPhoneBrands();
 
         IEnumerable<PhoneServiceModel> ByUser(string userId);
 
         IEnumerable<PhoneCategoryServiceModel> AllCategories();
+
+        IEnumerable<LatestPhoneServiceModel> Latest();
+
+        void ChangeVisility(int carId);
 
         bool IsByOwner(int phoneId, int ownerId);
 

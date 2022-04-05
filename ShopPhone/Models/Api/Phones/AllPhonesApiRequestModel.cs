@@ -1,10 +1,6 @@
 ﻿namespace ShopPhone.Models.Api.Phones
 {
     using ShopPhone.Models.Phones;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Threading.Tasks;
 
     public class AllPhonesApiRequestModel
     {

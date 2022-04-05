@@ -53,7 +53,9 @@
             this.data.Owners.Add(owners);
             this.data.SaveChanges();
 
-            return RedirectToAction("All", "Phones");
+            TempData[GlobalMessageKey] = "Thank you for becomming a owner!";
+
+            return RedirectToAction(nameof(PhonesController.All), "Phones");
         }
     }
 }

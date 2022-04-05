@@ -16,6 +16,10 @@
 
             public const int PhoneDescriptionMinLength = 10;
             public const int PhoneDescriptionMaxLength = 10000;
+
+            public const int PhonePriceMaxValue = 3000;
+            public const int PhonePriceMinValue = 0;
+
         }
 
         public class Owner

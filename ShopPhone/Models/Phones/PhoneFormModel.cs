@@ -5,7 +5,7 @@
     using System.ComponentModel.DataAnnotations;
 
     using static Data.DataConstants.Phone;
-    public class PhoneFormModel
+    public class PhoneFormModel : IPhoneModel
     { 
         [Required]
         [StringLength(PhoneBrandMaxLength, MinimumLength = PhoneBrandMinLength)]

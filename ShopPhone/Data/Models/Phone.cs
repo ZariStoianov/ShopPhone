@@ -26,6 +26,8 @@
         [StringLength(PhoneDescriptionMaxLength, MinimumLength = PhoneDescriptionMinLength)]
         public string Description { get; set; }
 
+        public bool IsPublic { get; set; }
+
         public int CategotyId { get; set; }
 
         public Category Category { get; set; }

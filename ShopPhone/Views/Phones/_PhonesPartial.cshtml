@@ -8,7 +8,7 @@
                 <img class="card-img-top" src="@phone.ImageUrl" alt="@phone.Brand @phone.Model @phone.Year (@phone.CategoryName)">
                 <div class="card-body text-center">
                     <h5 class="card-title text-center">@phone.Brand @phone.Model (@phone.Year)</h5>
-                    <a asp-controller="Phones" asp-action="Details" asp-route-id="@phone.Id" class="btn btn-primary">View More</a>
+                    <a asp-controller="Phones" asp-action="Details" asp-route-id="@phone.Id" asp-route-information="@phone.ToFriendlyUrl()" class="btn btn-primary">View More</a>
                     @if (ViewBag.AllowPhoneEdit == true || User.IsAdmin())
                     {
                         <a asp-controller="Phones" asp-action="Edit" asp-route-id="@phone.Id" class="btn btn-warning">Edit</a>

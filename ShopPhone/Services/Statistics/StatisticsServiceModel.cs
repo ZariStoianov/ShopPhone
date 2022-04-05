@@ -9,7 +9,7 @@
     {
         public int TotalUsers { get; set; }
 
-        public int TotalPrice { get; set; }
+        public double TotalPrice { get; set; }
 
         public int TotalPhones { get; set; }
     }

@@ -1,11 +1,6 @@
-﻿namespace ShopPhone.Models.Home
+﻿namespace ShopPhone.Services.Phones.Models
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Threading.Tasks;
-
-    public class PhoneIndexViewModel
+    public class LatestPhoneServiceModel : IPhoneModel
     {
         public int Id { get; set; }
 

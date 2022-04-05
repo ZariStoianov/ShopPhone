@@ -1,5 +1,7 @@
 ﻿namespace ShopPhone.Services.Phones
 {
+    using AutoMapper;
+    using AutoMapper.QueryableExtensions;
     using ShopPhone.Data;
     using ShopPhone.Data.Models;
     using ShopPhone.Models.Phones;
@@ -11,19 +13,23 @@
     {
 
         private readonly ApplicationDbContext data;
+        private readonly IMapper mapper;
 
-        public PhoneService(ApplicationDbContext data)
+        public PhoneService(ApplicationDbContext data, IMapper mapper)
         {
             this.data = data;
+            this.mapper = mapper;
         }
 
-        public PhoneQueryServiceModel All(string brand,
-            string searchTerm,
-            AllPhonesSorting sorting,
-            int currentPage,
-            int phonePerPage)
+        public PhoneQueryServiceModel All(string brand = null,
+            string searchTerm = null,
+            AllPhonesSorting sorting = AllPhonesSorting.DateCreated,
+            int currentPage = 1,
+            int phonePerPage = int.MaxValue,
+            bool publicOnly = true)
         {
-            var phoneQuery = this.data.Phones.AsQueryable();
+            var phoneQuery = this.data.Phones
+                .Where(p => !publicOnly || p.IsPublic);
 
             if (!string.IsNullOrWhiteSpace(brand))
             {
@@ -60,13 +66,24 @@
             };
         }
 
+        public void ChangeVisility(int phoneId)
+        {
+            var phone = this.data
+                .Phones
+                .Find(phoneId);
+
+            phone.IsPublic = !phone.IsPublic;
+
+            this.data.SaveChanges();
+        }
+
         public IEnumerable<string> AllPhoneBrands()
         {
             return this.data
                 .Phones
                 .Select(b => b.Brand)
                 .Distinct()
-                .OrderByDescending(b => b)
+                .OrderByDescending(br => br)
                 .ToList();
         }
 
@@ -77,29 +94,18 @@
                 .Where(p => p.Owner.UserId == userId));
         }
 
-        private static IEnumerable<PhoneServiceModel> GetPhones(IQueryable<Phone> phoneQuery)
+        private IEnumerable<PhoneServiceModel> GetPhones(IQueryable<Phone> phoneQuery)
         {
-            return phoneQuery.Select(p => new PhoneServiceModel
-            {
-                Id = p.Id,
-                Brand = p.Brand,
-                Model = p.Model,
-                Year = p.Year,
-                ImageUrl = p.ImageUrl,
-                CategoryName = p.Category.Name
-            })
-            .ToList();
+            return phoneQuery
+                .ProjectTo<PhoneServiceModel>(this.mapper.ConfigurationProvider)
+                .ToList();
         }
 
         public IEnumerable<PhoneCategoryServiceModel> AllCategories()
         {
             return this.data
                 .Categories
-                .Select(c => new PhoneCategoryServiceModel
-                {
-                    Id = c.Id,
-                    Name = c.Name
-                })
+                .ProjectTo<PhoneCategoryServiceModel>(this.mapper.ConfigurationProvider)
                 .ToList();
         }
 
@@ -108,20 +114,7 @@
             return this.data
                 .Phones
                 .Where(p => p.Id == id)
-                .Select(p => new PhoneDetailsServiceModel
-                {
-                    Id = p.Id,
-                    Brand = p.Brand,
-                    Model = p.Model,
-                    Year = p.Year,
-                    ImageUrl = p.ImageUrl,
-                    Description = p.Description,
-                    CategoryName = p.Category.Name,
-                    CategoryId = p.CategotyId,
-                    OwnerId = p.OwnerId,
-                    OwnerName = p.Owner.FullName,
-                    UserId = p.Owner.UserId
-                })
+                .ProjectTo<PhoneDetailsServiceModel>(this.mapper.ConfigurationProvider)
                 .FirstOrDefault();
         }
 
@@ -148,13 +141,32 @@
                 Year = year,
                 Description = description,
                 CategotyId = categoryId,
-                OwnerId = ownerId
+                OwnerId = ownerId,
+                IsPublic = false
             };
 
             this.data.Add(phones);
             this.data.SaveChanges();
 
             return phones.Id;
+        }
+
+        public bool IsByOwner(int phoneId, int ownerId)
+        {
+            return this.data
+                .Phones
+                .Any(p => p.Id == phoneId && p.OwnerId == ownerId);
+        }
+
+        public IEnumerable<LatestPhoneServiceModel> Latest()
+        {
+            return this.data
+                .Phones
+                .Where(p => p.IsPublic)
+                .OrderByDescending(p => p.Id)
+                .ProjectTo<LatestPhoneServiceModel>(this.mapper.ConfigurationProvider)
+                .Take(3)
+                .ToList();
         }
 
         public bool Edit(int id,
@@ -170,7 +182,7 @@
                 .Phones
                 .Find(id);
 
-            if (phone.OwnerId != ownerId)
+            if (phone == null)
             {
                 return false;
             }
@@ -182,17 +194,11 @@
             phone.Description = description;
             phone.CategotyId = categoryId;
             phone.OwnerId = ownerId;
+            phone.IsPublic = false;
 
             this.data.SaveChanges();
 
             return true;
-        }
-
-        public bool IsByOwner(int phoneId, int ownerId)
-        {
-            return this.data
-                .Phones
-                .Any(p => p.Id == phoneId && p.OwnerId == ownerId);
         }
     }
 }

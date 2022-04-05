@@ -1,17 +1,10 @@
-﻿@model IndexViewModel
+﻿@model List<LatestPhoneServiceModel>
 
 @{
     ViewData["Title"] = "Welcome";
 }
 
-@{
-    var phones = Model.Phones;
-    var firstPhones = phones.Any() ? phones[0] : null;
-    var secondPhones = phones.Count() > 1 ? phones[1] : null;
-    var thirdPhones = phones.Count() > 2 ? phones[2] : null;
-}
-
-@if (!phones.Any())
+@if (!Model.Any())
 {
     <div class="jumbotron">
         <h1 class="display-4">Welcome to best place for SmartPhones</h1>
@@ -26,30 +19,13 @@
 
 <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
     <div class="carousel-inner">
-        @if (firstPhones != null)
+        @for (int i = 0; i < Model.Count; i++)
         {
-            <div class="carousel-item active">
-                <img class="d-block w-50" src="@firstPhones.ImageUrl" alt="@firstPhones.Brand @firstPhones.Model">
+            var phone = Model[i];
+            <div class="carousel-item @(i == 0 ? "active" : string.Empty)">
+                <img class="d-block w-50" src="@phone.ImageUrl" alt="@phone.Brand @phone.Model">
                 <div class="carousel-caption d-none d-md-block">
-                    <h5><a class="btn btn-primary" asp-controller="Phones" asp-action="Details" asp-route-id="@firstPhones.Id">@firstPhones.Year @firstPhones.Brand @firstPhones.Model</a></h5>
-                </div>
-            </div>
-        }
-        @if (secondPhones != null)
-        {
-            <div class="carousel-item">
-                <img class="d-block w-50" src="@secondPhones.ImageUrl" alt="@secondPhones.Brand @secondPhones.Model">
-                <div class="carousel-caption d-none d-md-block">
-                    <h5><a class="btn btn-primary" asp-controller="Phones" asp-action="Details" asp-route-id="@secondPhones.Id">@secondPhones.Year @secondPhones.Brand @secondPhones.Model</a></h5>
-                </div>
-            </div>
-        }
-        @if (thirdPhones != null)
-        {
-            <div class="carousel-item">
-                <img class="d-block w-50" src="@thirdPhones.ImageUrl" alt="@thirdPhones.Brand @thirdPhones.Model">
-                <div class="carousel-caption d-none d-md-block">
-                    <h5><a class="btn btn-primary" asp-controller="Phones" asp-action="Details" asp-route-id="@thirdPhones.Id">@thirdPhones.Year @thirdPhones.Brand @thirdPhones.Model</a></h5>
+                    <h5><a class="btn btn-primary" asp-controller="Phones" asp-action="Details" asp-route-id="@phone.Id" asp-route-information="@phone.ToFriendlyUrl()">@phone.Year  @phone.Brand @phone.Model</a></h5>
                 </div>
             </div>
         }
