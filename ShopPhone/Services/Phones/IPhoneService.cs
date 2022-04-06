@@ -42,7 +42,8 @@
                 int year,
                 string description,
                 int categoryId,
-                int ownerId);
+                int ownerId,
+                bool isPublic);
 
         PhoneDetailsServiceModel Details(int id);
     }

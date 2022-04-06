@@ -8,6 +8,7 @@ namespace ShopPhone
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
+    using ShopPhone.Controllers;
     using ShopPhone.Data;
     using ShopPhone.Data.Models;
     using ShopPhone.Infrastructure;
@@ -79,9 +80,16 @@ namespace ShopPhone
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapDefaultAreaRoute();
+
                 endpoints.MapControllerRoute(
-                    name: "Areas",
-                    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+                    name: "Phone Details",
+                    pattern: "/Phones/Details/{id}/{information}",
+                    defaults: new
+                    {
+                        controller = typeof(PhonesController).GetControllerName(),
+                        action = nameof(PhonesController.Details)
+                    });
 
                 endpoints.MapDefaultControllerRoute();
                 endpoints.MapRazorPages();

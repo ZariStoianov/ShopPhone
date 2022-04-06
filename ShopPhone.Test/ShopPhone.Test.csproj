@@ -7,7 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.9.4" />
+    <PackageReference Include="FluentAssertions" Version="6.6.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.1.0" />
     <PackageReference Include="MyTested.AspNetCore.Mvc.Universe" Version="5.0.0" />
     <PackageReference Include="xunit" Version="2.4.1" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.3">
@@ -22,12 +23,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ShopPhone\ShopPhone.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Mocks\" />
-    <Folder Include="Controllers\" />
-    <Folder Include="Services\" />
   </ItemGroup>
 
 </Project>

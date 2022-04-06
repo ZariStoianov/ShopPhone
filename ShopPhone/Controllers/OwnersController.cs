@@ -8,6 +8,8 @@
     using ShopPhone.Models.Owners;
     using System.Linq;
 
+    using static WebConstants;
+
     public class OwnersController : Controller
     {
         private readonly ApplicationDbContext data;

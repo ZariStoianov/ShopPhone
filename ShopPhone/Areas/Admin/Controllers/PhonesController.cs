@@ -15,11 +15,11 @@
 
         public IActionResult All()
         {
-            var allPhone = this.phone
+            var allPhones = this.phone
                  .All(publicOnly: false)
                  .Phones;
 
-            return View(allPhone);
+            return View(allPhones);
         }
 
         public IActionResult ChangeVisibility(int id)

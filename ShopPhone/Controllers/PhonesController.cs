@@ -9,6 +9,8 @@
     using ShopPhone.Services.Owners;
     using ShopPhone.Services.Phones;
 
+    using static WebConstants;
+
     public class PhonesController : Controller
     {
         private readonly IPhoneService phones;
@@ -171,7 +173,8 @@
                 phone.Year,
                 phone.Description,
                 phone.CategoryId,
-                ownerId);
+                ownerId,
+                this.User.IsAdmin());
 
 
             TempData[GlobalMessageKey] = $"You phone was edited{(this.User.IsAdmin() ? string.Empty : " and is awaiting for approval")}!";

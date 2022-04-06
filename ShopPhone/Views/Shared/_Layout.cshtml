@@ -18,9 +18,12 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Phones" asp-action="Add">Add Phones</a>
-                        </li>
+                        @if (!User.IsAdmin())
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Phones" asp-action="Add">Add Phones</a>
+                            </li>
+                        }
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Phones" asp-action="All">All Phones</a>
                         </li>
@@ -31,6 +34,12 @@
         </nav>
     </header>
     <div class="container">
+        @if (TempData.ContainsKey(WebConstants.GlobalMessageKey))
+        {
+            <div class="alert alert-success" role="alert">
+                @TempData[WebConstants.GlobalMessageKey]
+            </div>
+        }
         <main role="main" class="pb-3">
             @RenderBody()
         </main>

@@ -176,7 +176,8 @@
             int year,
             string description,
             int categoryId,
-            int ownerId)
+            int ownerId,
+            bool isPublic)
         {
             var phone = this.data
                 .Phones
@@ -194,7 +195,7 @@
             phone.Description = description;
             phone.CategotyId = categoryId;
             phone.OwnerId = ownerId;
-            phone.IsPublic = false;
+            phone.IsPublic = isPublic;
 
             this.data.SaveChanges();
 
