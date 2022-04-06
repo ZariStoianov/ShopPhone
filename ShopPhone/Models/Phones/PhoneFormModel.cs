@@ -24,12 +24,16 @@
         public int Year { get; set; }
 
         [Required]
+        public decimal PriceForPhone { get; set; }
+
+        [Required]
         [StringLength(PhoneDescriptionMaxLength, MinimumLength = PhoneDescriptionMinLength)]
         public string Description { get; set; }
 
         [Required]
         [Display(Name = "Category")]
         public int CategoryId { get; set; }
+
         public IEnumerable<PhoneCategoryServiceModel> Categories { get; set; }
     }
 }

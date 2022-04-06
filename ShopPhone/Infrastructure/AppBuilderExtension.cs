@@ -46,8 +46,9 @@ namespace ShopPhone.Infrastructure
 
             data.Categories.AddRange(new[]
             {
-                new Category{Name = "iPhone"},
+                new Category{Name = "iOS"},
                 new Category{Name = "Android"},
+                new Category{Name = "Linux"},
                 new Category{Name = "Windows Phone"},
                 new Category{Name = "Amazon's Fire Phone"},
             });

@@ -28,7 +28,7 @@
             builder.Entity<Phone>()
                 .HasOne(p => p.Category)
                 .WithMany(p => p.Phones)
-                .HasForeignKey(p => p.CategotyId)
+                .HasForeignKey(p => p.CategoryId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder.Entity<Owner>()
@@ -36,6 +36,10 @@
                 .WithOne()
                 .HasForeignKey<Owner>(o => o.UserId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<Phone>()
+                .Property(p => p.PriceForPhone)
+                .HasPrecision(18, 2);
 
             base.OnModelCreating(builder);
         }

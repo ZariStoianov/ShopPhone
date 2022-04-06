@@ -104,9 +104,10 @@
             var phoneId = this.phones.Create(phone.Brand,
                 phone.Model,
                 phone.ImageUrl,
-                phone.Year,
                 phone.Description,
+                phone.Year,
                 phone.CategoryId,
+                phone.PriceForPhone,
                 ownerId);
 
             TempData[GlobalMessageKey] = "You phone was added and is awaiting for approval.";
@@ -170,9 +171,10 @@
                 phone.Brand,
                 phone.Model,
                 phone.ImageUrl,
-                phone.Year,
                 phone.Description,
+                phone.Year,
                 phone.CategoryId,
+                phone.PriceForPhone,
                 ownerId,
                 this.User.IsAdmin());
 

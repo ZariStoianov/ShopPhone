@@ -23,12 +23,16 @@
         public int Year { get; set; }
 
         [Required]
+        [Range(0, double.PositiveInfinity)]
+        public decimal PriceForPhone { get; set; }
+
+        [Required]
         [StringLength(PhoneDescriptionMaxLength, MinimumLength = PhoneDescriptionMinLength)]
         public string Description { get; set; }
 
         public bool IsPublic { get; set; }
 
-        public int CategotyId { get; set; }
+        public int CategoryId { get; set; }
 
         public Category Category { get; set; }
 

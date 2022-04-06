@@ -1,6 +1,23 @@
 ﻿@model PhoneDetailsServiceModel
 
+@{
+    var phone = Model;
+}
 
-<div class="col-md-6 offset-3">
-    <h2>@Model.Brand @Model.Model</h2>
+
+<div class="card" style="width: 18rem;">
+    <img class="card-img-top" src="@phone.ImageUrl" alt="Card image cap">
+    <div class="card-body">
+        <p class="card-text">@phone.Description</p>
+    </div>
+</div>
+<div class="card" style="width: 18rem;">
+    <div class="card-header">
+        @phone.Brand
+    </div>
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item">Model - @phone.Model</li>
+        <li class="list-group-item">Year - @phone.Year</li>
+        <li class="list-group-item">OperatingSystem - @phone.CategoryName</li>
+    </ul>
 </div>

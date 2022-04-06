@@ -27,21 +27,23 @@
 
         bool CategoryExists(int categoryId);
 
-        int Create(string brand,
+        decimal Create(string brand,
                 string model,
                 string imageUrl,
-                int year,
                 string description,
+                int year,
                 int categoryId,
+                decimal price,
                 int ownerId);
 
         bool Edit(int id,
                 string brand,
                 string model,
                 string imageUrl,
-                int year,
                 string description,
+                int year,
                 int categoryId,
+                decimal price,
                 int ownerId,
                 bool isPublic);
 

@@ -48,6 +48,7 @@
             {
                 AllPhonesSorting.Year => phoneQuery.OrderByDescending(p => p.Year),
                 AllPhonesSorting.BrandAndModel => phoneQuery.OrderBy(p => p.Model),
+                AllPhonesSorting.Price => phoneQuery.OrderBy(p => p.PriceForPhone),
                 AllPhonesSorting.DateCreated or _ => phoneQuery.OrderByDescending(p => p.Id),
             };
 
@@ -125,30 +126,32 @@
                 .Any(c => c.Id == categoryId);
         }
 
-        public int Create(string brand,
+        public decimal Create(string brand,
             string model,
             string imageUrl,
-            int year,
             string description,
+            int year,
             int categoryId,
+            decimal price,
             int ownerId)
         {
-            var phones = new Phone
+            var newPhone = new Phone
             {
                 Brand = brand,
                 Model = model,
                 ImageUrl = imageUrl,
-                Year = year,
                 Description = description,
-                CategotyId = categoryId,
+                Year = year,
+                CategoryId = categoryId,
                 OwnerId = ownerId,
+                PriceForPhone = price,
                 IsPublic = false
             };
 
-            this.data.Add(phones);
+            this.data.Phones.Add(newPhone);
             this.data.SaveChanges();
 
-            return phones.Id;
+            return newPhone.Id;
         }
 
         public bool IsByOwner(int phoneId, int ownerId)
@@ -169,14 +172,15 @@
                 .ToList();
         }
 
-        public bool Edit(int id,
-            string brand,
-            string model,
-            string imageUrl,
-            int year,
-            string description,
-            int categoryId,
-            int ownerId,
+        public bool Edit(int id, 
+            string brand, 
+            string model, 
+            string imageUrl, 
+            string description, 
+            int year, 
+            int categoryId, 
+            decimal price, 
+            int ownerId, 
             bool isPublic)
         {
             var phone = this.data
@@ -191,10 +195,11 @@
             phone.Brand = brand;
             phone.Model = model;
             phone.ImageUrl = imageUrl;
-            phone.Year = year;
             phone.Description = description;
-            phone.CategotyId = categoryId;
+            phone.Year = year;
+            phone.CategoryId = categoryId;
             phone.OwnerId = ownerId;
+            phone.PriceForPhone = price;
             phone.IsPublic = isPublic;
 
             this.data.SaveChanges();

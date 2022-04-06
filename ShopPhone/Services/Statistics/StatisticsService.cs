@@ -18,11 +18,13 @@
         {
             var totalPhones = this.data.Phones.Count();
             var totalUsers = this.data.Users.Count();
+            var totalPrice = this.data.Phones.Sum(p => p.PriceForPhone);
 
             return new StatisticsServiceModel
             {
                 TotalPhones = totalPhones,
-                TotalUsers = totalUsers
+                TotalUsers = totalUsers,
+                TotalPrice = totalPrice
             };
         }
     }
