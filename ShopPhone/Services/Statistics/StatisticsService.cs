@@ -1,7 +1,6 @@
 ﻿namespace ShopPhone.Services.Statistics
 {
     using ShopPhone.Data;
-    using System;
     using System.Linq;
 
     public class StatisticsService : IStatisticsService
@@ -24,7 +23,7 @@
             {
                 TotalPhones = totalPhones,
                 TotalUsers = totalUsers,
-                TotalPrice = totalPrice
+                TotalPrice = totalPrice,
             };
         }
     }

@@ -10,6 +10,8 @@
 
         public string ImageUrl { get; set; }
 
+        public decimal PriceForPhone { get; set; }
+
         public int Year { get; set; }
 
         public bool IsPublic { get; set; }

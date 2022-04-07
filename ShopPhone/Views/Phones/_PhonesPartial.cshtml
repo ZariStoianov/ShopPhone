@@ -12,7 +12,7 @@
                     @if (ViewBag.AllowPhoneEdit == true || User.IsAdmin())
                     {
                         <a asp-controller="Phones" asp-action="Edit" asp-route-id="@phone.Id" class="btn btn-warning">Edit</a>
-                        <a asp-controller="Phones" asp-action="Delete" asp-route-id="@phone.Id" class="btn btn-danger">Delete</a>
+                        <a asp-area="" asp-controller="Phones" asp-action="Delete" asp-route-id="@phone.Id" class="btn btn-danger">Delete</a>
                     }
                 </div>
             </div>

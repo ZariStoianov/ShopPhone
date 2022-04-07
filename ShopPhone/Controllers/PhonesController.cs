@@ -112,7 +112,7 @@
 
             TempData[GlobalMessageKey] = "You phone was added and is awaiting for approval.";
 
-            return RedirectToAction(nameof(Details), new { id = phoneId, information = phone.ToFriendlyUrl()});
+            return RedirectToAction(nameof(Details), new { id = phoneId, information = phone.ToFriendlyUrl() });
         }
 
 
@@ -167,21 +167,56 @@
                 return BadRequest();
             }
 
-             var edited = this.phones.Edit(id,
-                phone.Brand,
-                phone.Model,
-                phone.ImageUrl,
-                phone.Description,
-                phone.Year,
-                phone.CategoryId,
-                phone.PriceForPhone,
-                ownerId,
-                this.User.IsAdmin());
+            var edited = this.phones.Edit(id,
+               phone.Brand,
+               phone.Model,
+               phone.ImageUrl,
+               phone.Description,
+               phone.Year,
+               phone.CategoryId,
+               phone.PriceForPhone,
+               ownerId,
+               this.User.IsAdmin());
 
 
             TempData[GlobalMessageKey] = $"You phone was edited{(this.User.IsAdmin() ? string.Empty : " and is awaiting for approval")}!";
 
             return RedirectToAction(nameof(Details), new { id, information = phone.ToFriendlyUrl() });
         }
+
+        [Authorize]
+        [HttpPost]
+        public IActionResult Delete(int id, PhoneFormModel phone)
+        {
+            var ownerId = this.owners.GetIdByUser(this.User.GetId());
+
+            if (ownerId == 0 && !User.IsAdmin())
+            {
+                return RedirectToAction("Create", "Owners");
+            }
+
+            if (!this.phones.CategoryExists(phone.CategoryId))
+            {
+                this.ModelState.AddModelError(nameof(phone.CategoryId), "Category does not exist.");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                phone.Categories = this.phones.AllCategories();
+                return View(phone);
+            }
+
+            if (!this.phones.IsByOwner(id, ownerId) && !User.IsAdmin())
+            {
+                return BadRequest();
+            }
+
+            this.phones.Delete(id);
+
+
+            TempData[GlobalMessageKey] = $"This phone was deleted!";
+
+            return RedirectToAction("All");
+        }
     }
-}
+}   

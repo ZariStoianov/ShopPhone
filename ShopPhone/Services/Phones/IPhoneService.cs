@@ -47,6 +47,8 @@
                 int ownerId,
                 bool isPublic);
 
+        int Delete(int id);
+
         PhoneDetailsServiceModel Details(int id);
     }
 }

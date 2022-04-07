@@ -28,5 +28,12 @@
 
             return RedirectToAction("All");
         }
+
+        public IActionResult Delete(int id)
+        {
+            this.phone.Delete(id);
+
+            return RedirectToAction("All");
+        }
     }
 }

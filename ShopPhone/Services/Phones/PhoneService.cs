@@ -206,5 +206,18 @@
 
             return true;
         }
+
+        public int Delete(int id)
+        {
+            var phone = this.data
+                .Phones
+                .FirstOrDefault(x => x.Id == id);
+
+            this.data.Phones.Remove(phone);
+
+            this.data.SaveChanges();
+
+            return phone.Id;
+        }
     }
 }

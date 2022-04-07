@@ -19,20 +19,20 @@
     <tbody>
         @foreach (var phone in Model)
         {
-          <tr>
-              <td scope="col">@phone.Id</td>
-              <td scope="col">@phone.Brand</td>
-              <td scope="col">@phone.Model</td>
-              <td scope="col">@phone.Year</td>
-              <td scope="col">@phone.CategoryName</td>
-              <td scope="col">@(phone.IsPublic ? "Yes" : "No")</td>
-              <td scope="col">
-                  <a asp-area="" asp-controller="Phones" asp-action="Delete" asp-route-id="@phone.Id" class="btn btn-danger float-right ml-3">Delete</a>
-                  <a asp-area="" asp-controller="Phones" asp-action="Edit" asp-route-id="@phone.Id" class="btn btn-warning float-right ml-3">Edit</a>
-                  <a asp-area="Admin" asp-controller="Phones" asp-action="ChangeVisibility" asp-route-id="@phone.Id" class="btn btn-info float-right ml-3">@(phone.IsPublic ? "Hide" : "Show")</a>
-                  <a asp-area="" asp-controller="Phones" asp-action="Details" asp-route-id="@phone.Id" asp-route-information="@phone.ToFriendlyUrl()" class="btn btn-primary float-right ml-3">View</a>
-              </td>
-          </tr>
+        <tr>
+            <td scope="col">@phone.Id</td>
+            <td scope="col">@phone.Brand</td>
+            <td scope="col">@phone.Model</td>
+            <td scope="col">@phone.Year</td>
+            <td scope="col">@phone.CategoryName</td>
+            <td scope="col">@(phone.IsPublic ? "Yes" : "No")</td>
+            <td scope="col">
+                <a asp-area="Admin" asp-controller="Phones" asp-action="Delete" asp-route-id="@phone.Id" class="btn btn-danger float-right ml-3">Delete</a>
+                <a asp-area="" asp-controller="Phones" asp-action="Edit" asp-route-id="@phone.Id" class="btn btn-warning float-right ml-3">Edit</a>
+                <a asp-area="Admin" asp-controller="Phones" asp-action="ChangeVisibility" asp-route-id="@phone.Id" class="btn btn-info float-right ml-3">@(phone.IsPublic ? "Hide" : "Show")</a>
+                <a asp-area="" asp-controller="Phones" asp-action="Details" asp-route-id="@phone.Id" asp-route-information="@phone.ToFriendlyUrl()" class="btn btn-primary float-right ml-3">View</a>
+            </td>
+        </tr>
          }
     </tbody>
 </table>
