@@ -1,0 +1,18 @@
+﻿@model PhoneFormModel
+
+@{var phone = Model; }
+
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card mb-4">
+                <img class="card-img-top" src="@phone.ImageUrl" alt="@phone.Brand @phone.Model @phone.Year">
+                <div class="card-body text-center">
+                    <h5 class="card-title text-center">@phone.Brand @phone.Model (@phone.Year)</h5>
+                    @if (ViewBag.AllowPhoneDelete == true || User.Identity.IsAuthenticated)
+                    {
+                        <a asp-area="" asp-controller="Phones" asp-action="Delete" class="btn btn-danger">Delete</a>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>

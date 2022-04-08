@@ -185,6 +185,28 @@
         }
 
         [Authorize]
+        public IActionResult Delete(int id)
+        {
+
+            var userId = this.User.GetId();
+
+            var phone = this.phones.Details(id);
+
+            if (phone.UserId != userId)
+            {
+                return Unauthorized();
+            }
+
+            var phoneForm = this.mapper.Map<PhoneFormModel>(phone);
+
+            phoneForm.Categories = this.phones.AllCategories();
+
+            this.phones.Delete(id);
+           
+            return RedirectToAction("All");
+        }
+
+        [Authorize]
         [HttpPost]
         public IActionResult Delete(int id, PhoneFormModel phone)
         {
