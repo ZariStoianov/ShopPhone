@@ -26,6 +26,8 @@
                 <img class="d-block w-50" src="@phone.ImageUrl" alt="@phone.Brand @phone.Model">
                 <div class="carousel-caption d-none d-md-block">
                     <h5><a class="btn btn-primary" asp-controller="Phones" asp-action="Details" asp-route-id="@phone.Id" asp-route-information="@phone.ToFriendlyUrl()">@phone.Year  @phone.Brand @phone.Model</a></h5>
+                    <a class="adConnectButton adConnectButtonPhone" style="margin-top: 10px;" data-id="id" data-hash="1b7fbd8095eaca98d668b27e4f02db86" href="tel:0898 562 472">
+                    <alt="">@phone.PhoneNumber "make orders"</a>
                 </div>
             </div>
         }

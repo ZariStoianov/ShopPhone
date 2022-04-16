@@ -20,6 +20,9 @@
             public const int PhonePriceMaxValue = 3000;
             public const int PhonePriceMinValue = 0;
 
+            public const int PhoneNumberMaxValue = 20;
+            public const int PhoneNumberMinValue = 10;
+
         }
 
         public class Owner

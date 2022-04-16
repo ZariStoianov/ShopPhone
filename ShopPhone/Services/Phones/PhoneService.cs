@@ -130,6 +130,7 @@
             string model,
             string imageUrl,
             string description,
+            string phoneNumber,
             int year,
             int categoryId,
             decimal price,
@@ -144,6 +145,7 @@
                 Year = year,
                 CategoryId = categoryId,
                 OwnerId = ownerId,
+                PhoneNumber = phoneNumber,
                 PriceForPhone = price,
                 IsPublic = false
             };
@@ -176,7 +178,8 @@
             string brand, 
             string model, 
             string imageUrl, 
-            string description, 
+            string description,
+            string phoneNumber,
             int year, 
             int categoryId, 
             decimal price, 
@@ -196,6 +199,7 @@
             phone.Model = model;
             phone.ImageUrl = imageUrl;
             phone.Description = description;
+            phone.PhoneNumber = phoneNumber;
             phone.Year = year;
             phone.CategoryId = categoryId;
             phone.OwnerId = ownerId;

@@ -27,6 +27,10 @@
         public decimal PriceForPhone { get; set; }
 
         [Required]
+        [StringLength(PhoneNumberMaxValue, MinimumLength = PhoneNumberMinValue)]
+        public string PhoneNumber { get; set; }
+
+        [Required]
         [StringLength(PhoneDescriptionMaxLength, MinimumLength = PhoneDescriptionMinLength)]
         public string Description { get; set; }
 

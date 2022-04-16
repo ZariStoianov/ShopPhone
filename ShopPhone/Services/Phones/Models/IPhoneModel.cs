@@ -7,5 +7,7 @@
         string Model { get; }
 
         int Year { get; }
+
+        string PhoneNumber { get; }
     }
 }

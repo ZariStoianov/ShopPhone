@@ -19,6 +19,10 @@
         public string ImageUrl { get; set; }
 
         [Required]
+        [StringLength(PhoneNumberMaxValue, MinimumLength = PhoneNumberMinValue)]
+        public string PhoneNumber { get; set; }
+
+        [Required]
         [StringLength(PhoneYearMaxValue, MinimumLength = PhoneYearMinValue)]
         public int Year { get; set; }
 
